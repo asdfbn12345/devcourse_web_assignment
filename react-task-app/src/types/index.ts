@@ -12,6 +12,8 @@ export interface IList {
 }
 
 export interface IBoard {
+  id: string;
+  name: string;
   lists: IList[];
 }
 
