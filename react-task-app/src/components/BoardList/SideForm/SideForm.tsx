@@ -37,7 +37,7 @@ const SideForm: React.FC<TSideFormProps> = ({ setIsFormOpen }) => {
           id: uuidv4(),
           message: `게시판 등록: ${inputText}`,
           author: "user",
-          timestamp: new Date(),
+          timestamp: String(Date.now()),
         })
       );
     }

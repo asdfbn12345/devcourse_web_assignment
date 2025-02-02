@@ -14,11 +14,11 @@ type TModalState = {
 };
 
 const initialState: TModalState = {
-  boardId: "board-0",
-  listId: "list-0",
+  boardId: "board-1",
+  listId: "list-1",
   task: {
-    id: "task-0",
-    name: "task-0",
+    id: "task-1",
+    name: "task1",
     description: "task description",
     owner: "John",
   },

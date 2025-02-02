@@ -25,7 +25,7 @@ const List: React.FC<TListProps> = ({ list, boardId }) => {
         id: uuidv4(),
         message: `리스트 삭제하기: ${list.name}`,
         author: "user",
-        timestamp: new Date(),
+        timestamp: String(Date.now()),
       })
     );
   };

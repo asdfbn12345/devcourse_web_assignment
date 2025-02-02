@@ -69,7 +69,7 @@ const DropDownForm: React.FC<TDropDownFormProps> = ({
           id: uuidv4(),
           author: "user",
           message: `일 생성하기: ${text}`,
-          timestamp: new Date(),
+          timestamp: String(Date.now()),
         })
       );
     }

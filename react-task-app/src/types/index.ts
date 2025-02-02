@@ -21,5 +21,5 @@ export interface ILogItem {
   id: string;
   author: string;
   message: string;
-  timestamp: Date;
+  timestamp: string;
 }

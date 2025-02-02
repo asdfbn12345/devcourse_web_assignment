@@ -34,6 +34,10 @@ type TAddBoardAction = {
   board: IBoard;
 };
 
+type TDeleteBoardAction = {
+  boardId: string;
+};
+
 type TAddListAction = {
   boardId: string;
   list: IList;
@@ -50,12 +54,29 @@ type TAddTaskAction = {
   task: ITask;
 };
 
+type TUpdateTaskAction = {
+  boardId: string;
+  listId: string;
+  task: ITask;
+};
+
+type TDeleteTaskAction = {
+  boardId: string;
+  listId: string;
+  taskId: string;
+};
+
 const boardsSlice = createSlice({
   name: "boards",
   initialState,
   reducers: {
     addBoard: (state, { payload }: PayloadAction<TAddBoardAction>) => {
       state.boards.push(payload.board);
+    },
+    deleteBoard: (state, { payload }: PayloadAction<TDeleteBoardAction>) => {
+      state.boards = state.boards.filter((board) => {
+        return board.id !== payload.boardId;
+      });
     },
     addList: (state, { payload }: PayloadAction<TAddListAction>) => {
       state.boards.map((board) => {
@@ -88,12 +109,60 @@ const boardsSlice = createSlice({
           : board;
       });
     },
+    updateTask: (state, { payload }: PayloadAction<TUpdateTaskAction>) => {
+      state.boards = state.boards.map((board) => {
+        return board.id === payload.boardId
+          ? {
+              ...board,
+              lists: board.lists.map((list) => {
+                return list.id === payload.listId
+                  ? {
+                      ...list,
+                      tasks: list.tasks.map((task) => {
+                        return task.id === payload.task.id
+                          ? payload.task
+                          : task;
+                      }),
+                    }
+                  : list;
+              }),
+            }
+          : board;
+      });
+    },
+    deleteTask: (state, { payload }: PayloadAction<TDeleteTaskAction>) => {
+      state.boards = state.boards.map((board) => {
+        return board.id === payload.boardId
+          ? {
+              ...board,
+              lists: board.lists.map((list) => {
+                return list.id === payload.listId
+                  ? {
+                      ...list,
+                      tasks: list.tasks.filter((task) => {
+                        return task.id !== payload.taskId;
+                      }),
+                    }
+                  : list;
+              }),
+            }
+          : board;
+      });
+    },
     setModalActive: (state, { payload }: PayloadAction<boolean>) => {
       state.modalActive = payload;
     },
   },
 });
 
-export const { addBoard, addList, deleteList, addTask, setModalActive } =
-  boardsSlice.actions;
+export const {
+  addBoard,
+  deleteBoard,
+  addList,
+  deleteList,
+  addTask,
+  updateTask,
+  deleteTask,
+  setModalActive,
+} = boardsSlice.actions;
 export const boardsReducer = boardsSlice.reducer;
