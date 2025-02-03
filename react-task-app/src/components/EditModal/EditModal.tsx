@@ -74,6 +74,8 @@ const EditModal = () => {
         timestamp: String(Date.now()),
       })
     );
+
+    dispatch(setModalActive(false));
   };
   const handleDelete = () => {
     dispatch(

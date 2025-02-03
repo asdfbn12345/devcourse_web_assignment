@@ -7,7 +7,7 @@ type TBoardsState = {
 };
 
 const initialState: TBoardsState = {
-  modalActive: true,
+  modalActive: false,
   boards: [
     {
       id: "board-1",
@@ -64,6 +64,15 @@ type TDeleteTaskAction = {
   boardId: string;
   listId: string;
   taskId: string;
+};
+
+type TSortAction = {
+  boardId: string;
+  listIdStart: string;
+  listIdEnd?: string;
+  taskIndexStart: number;
+  taskIndexEnd?: number;
+  id: string;
 };
 
 const boardsSlice = createSlice({
@@ -152,6 +161,25 @@ const boardsSlice = createSlice({
     setModalActive: (state, { payload }: PayloadAction<boolean>) => {
       state.modalActive = payload;
     },
+    sort: (state, { payload }: PayloadAction<TSortAction>) => {
+      if (
+        payload.listIdEnd === undefined ||
+        payload.taskIndexEnd === undefined
+      ) {
+        return;
+      }
+
+      const board = state.boards.filter(
+        (board) => board.id === payload.boardId
+      )[0];
+      const listStart = board.lists.find(
+        (list) => list.id === payload.listIdStart
+      );
+      const card = listStart?.tasks.splice(payload.taskIndexStart, 1);
+
+      const listEnd = board.lists.find((list) => list.id === payload.listIdEnd);
+      listEnd?.tasks.splice(payload.taskIndexEnd, 0, ...card!);
+    },
   },
 });
 
@@ -164,5 +192,6 @@ export const {
   updateTask,
   deleteTask,
   setModalActive,
+  sort,
 } = boardsSlice.actions;
 export const boardsReducer = boardsSlice.reducer;

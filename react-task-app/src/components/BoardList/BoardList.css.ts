@@ -3,7 +3,7 @@ import { vars } from "../../App.css";
 
 export const container = style({
   display: "flex",
-  flexDirection: "column",
+  flexDirection: "row",
   alignItems: "center",
   flexWrap: "wrap",
   rowGap: 15,

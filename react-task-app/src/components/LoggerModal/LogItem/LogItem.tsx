@@ -12,7 +12,7 @@ const LogItem: React.FC<TLogItemProps> = ({ logItem }) => {
   const showOffsetTime = `
     ${timeOffset.getMinutes() > 0 ? `${timeOffset.getMinutes()}m` : ""}
     ${timeOffset.getSeconds() > 0 ? `${timeOffset.getSeconds()}s` : ""}
-    ${timeOffset.getSeconds() === 0 ? `just now` : ""}
+    ${timeOffset.getSeconds() === 0 ? `just now` : " ago"}
   `;
 
   return (

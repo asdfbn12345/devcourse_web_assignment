@@ -44,7 +44,7 @@ export const vars = createGlobalTheme(":root", {
 
 export const appContainer = style({
   display: "flex",
-  flexDirection: "row",
+  flexDirection: "column",
   minHeight: "100vh",
   height: "max-content",
   width: "100vw",

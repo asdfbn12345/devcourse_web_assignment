@@ -10,9 +10,10 @@ import { useTypedDispatch, useTypedSelector } from "./hooks/redux";
 import BoardList from "./components/BoardList/BoardList";
 import EditModal from "./components/EditModal/EditModal";
 import LoggerModal from "./components/LoggerModal/LoggerModal";
-import { deleteBoard } from "./store/slices/boardsSlice";
+import { deleteBoard, sort } from "./store/slices/boardsSlice";
 import { addLog } from "./store/slices/loggerSlice";
 import { v4 as uuidv4 } from "uuid";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
 function App() {
   const dispatch = useTypedDispatch();
@@ -55,6 +56,39 @@ function App() {
     }
   };
 
+  const handleDragEnd = (result: DropResult) => {
+    const { destination, source, draggableId } = result;
+    const sourceList = lists.filter(
+      (list) => list.id === source.droppableId
+    )[0];
+
+    dispatch(
+      sort({
+        boardId: activeBoardId,
+        listIdStart: source.droppableId,
+        listIdEnd: destination?.droppableId,
+        taskIndexStart: source.index,
+        taskIndexEnd: destination?.index,
+        id: draggableId,
+      })
+    );
+
+    const destinationListName = lists.filter(
+      (list) => list.id === destination?.droppableId
+    )[0].name;
+    const taskName = sourceList.tasks.filter(
+      (task) => task.id === draggableId
+    )[0].name;
+    dispatch(
+      addLog({
+        id: uuidv4(),
+        author: "user",
+        message: `작업 ${taskName}을 리스트 ${sourceList.name}에서 리스트 ${destinationListName}으로 이동`,
+        timestamp: String(Date.now()),
+      })
+    );
+  };
+
   return (
     <div className={appContainer}>
       {isLoggerOpen ? <LoggerModal setIsLoggerOpen={setIsLoggerOpen} /> : null}
@@ -64,7 +98,9 @@ function App() {
         setActiveBoardId={setActiveBoardId}
       ></BoardList>
       <div className={board}>
-        <ListsContainer lists={lists} boardId={getActiveBoard.id} />
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <ListsContainer lists={lists} boardId={getActiveBoard.id} />
+        </DragDropContext>
       </div>
       <div>
         <button className={deleteBoardButton} onClick={handleDeleteBoard}>

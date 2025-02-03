@@ -1,5 +1,6 @@
 import React from "react";
 import { container, title, content } from "./Task.css";
+import { Draggable } from "react-beautiful-dnd";
 
 type TTaskProps = {
   boardId: string;
@@ -17,10 +18,19 @@ const Task: React.FC<TTaskProps> = ({
   description,
 }) => {
   return (
-    <div className={container}>
-      <div className={title}>{name}</div>
-      <div className={content}>{description}</div>
-    </div>
+    <Draggable draggableId={id} index={index}>
+      {(provided) => (
+        <div
+          className={container}
+          ref={provided.innerRef}
+          {...provided.dragHandleProps}
+          {...provided.draggableProps}
+        >
+          <div className={title}>{name}</div>
+          <div className={content}>{description}</div>
+        </div>
+      )}
+    </Draggable>
   );
 };
 
