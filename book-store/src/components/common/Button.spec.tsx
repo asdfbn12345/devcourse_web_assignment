@@ -1,0 +1,23 @@
+import { render, screen } from "@testing-library/react";
+import Button from "./Button";
+import { BookStoreThemeProvider } from "context/themeContext";
+
+describe("Test title component", () => {
+  // v1
+  it("check render", () => {
+    render(
+      <BookStoreThemeProvider>
+        <Button
+          size="large"
+          scheme="primary"
+          disabled={false}
+          isLoading={false}
+        >
+          Button
+        </Button>
+      </BookStoreThemeProvider>
+    );
+
+    expect(screen.getByText("Button")).toBeInTheDocument();
+  });
+});
