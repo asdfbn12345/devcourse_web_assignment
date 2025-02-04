@@ -7,12 +7,7 @@ describe("Test title component", () => {
   it("check render", () => {
     render(
       <BookStoreThemeProvider>
-        <Button
-          size="large"
-          scheme="primary"
-          disabled={false}
-          isLoading={false}
-        >
+        <Button size="large" scheme="primary">
           Button
         </Button>
       </BookStoreThemeProvider>
