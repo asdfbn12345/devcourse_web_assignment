@@ -4,9 +4,12 @@ import styled from "styled-components";
 import logo from "../../assets/images/logo.png";
 import { FaRegUser, FaSignInAlt } from "react-icons/fa";
 import { useCategory } from "hooks/useCategory";
+import { useAuthStore } from "store/autStore";
+import { Link } from "react-router-dom";
 
 function Header() {
-  const category = useCategory();
+  const { category } = useCategory();
+  const { isLoggedIn, storeLogout } = useAuthStore();
 
   return (
     <HeaderStyle>
@@ -23,20 +26,35 @@ function Header() {
         </ul>
       </nav>
       <nav className="auth">
-        <ul>
-          <li>
-            <a href="/login">
-              <FaSignInAlt />
-              login
-            </a>
-          </li>
-          <li>
-            <a href="/sign-up">
-              <FaRegUser />
-              sign-up
-            </a>
-          </li>
-        </ul>
+        {!isLoggedIn && (
+          <ul>
+            <li>
+              <Link to="/cart">Shopping cart</Link>
+            </li>
+            <li>
+              <Link to="/orderList">Order list</Link>
+            </li>
+            <li>
+              <button>Logout</button>
+            </li>
+          </ul>
+        )}
+        {!isLoggedIn && (
+          <ul>
+            <li>
+              <a href="/login">
+                <FaSignInAlt />
+                login
+              </a>
+            </li>
+            <li>
+              <a href="/sign-up">
+                <FaRegUser />
+                sign-up
+              </a>
+            </li>
+          </ul>
+        )}
       </nav>
       <ThemeSwitcher />
     </HeaderStyle>

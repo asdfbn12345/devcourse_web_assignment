@@ -3,7 +3,6 @@ import Button from "./Button";
 import { BookStoreThemeProvider } from "context/themeContext";
 
 describe("Test title component", () => {
-  // v1
   it("check render", () => {
     render(
       <BookStoreThemeProvider>

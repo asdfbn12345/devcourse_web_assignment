@@ -1,0 +1,8 @@
+error
+    1. list1 dnd가 되지 않음
+    2. edit modal
+        x 아이콘 위치 오류
+        모달 창에 스크롤바가 생기는 문제
+
+    3. dispatch removeUser
+    4. firebase 연결
