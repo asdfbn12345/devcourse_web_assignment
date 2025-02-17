@@ -9,15 +9,13 @@ import ResetPassword from "pages/ResetPassword";
 import Login from "pages/Login";
 import Books from "pages/Books";
 import BookDetail from "pages/BookDetail";
+import { QueryClientProvider } from "react-query";
+import { queryClient } from "api/queryClient";
 
-const router = createBrowserRouter([
+const routeList = [
   {
     path: "/",
-    element: (
-      <Layout>
-        <Home />
-      </Layout>
-    ),
+    element: <Home />,
     errorElement: <Error />,
   },
   {
@@ -26,43 +24,39 @@ const router = createBrowserRouter([
   },
   {
     path: "/sign-up",
-    element: (
-      <Layout>
-        <SignUp />
-      </Layout>
-    ),
+    element: <SignUp />,
   },
   {
     path: "/reset",
-    element: (
-      <Layout>
-        <ResetPassword />
-      </Layout>
-    ),
+    element: <ResetPassword />,
   },
   {
     path: "/login",
-    element: (
-      <Layout>
-        <Login />
-      </Layout>
-    ),
+    element: <Login />,
   },
   {
     path: "/book/:bookId",
-    element: (
-      <Layout>
-        <BookDetail />
-      </Layout>
-    ),
+    element: <BookDetail />,
   },
-]);
+];
+
+const router = createBrowserRouter(
+  routeList.map((route) => {
+    return {
+      ...route,
+      element: <Layout>{route.element}</Layout>,
+      errorElement: <Error />,
+    };
+  })
+);
 
 function App() {
   return (
-    <BookStoreThemeProvider>
-      <RouterProvider router={router} />
-    </BookStoreThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <BookStoreThemeProvider>
+        <RouterProvider router={router} />
+      </BookStoreThemeProvider>
+    </QueryClientProvider>
   );
 }
 

@@ -1,12 +1,11 @@
-import React, { ChangeEvent, useState } from "react";
+import React from "react";
 import Title from "components/common/Title";
 import InputText from "components/common/InputText";
 import Button from "components/common/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { resetPassword, resetRequest, signUp } from "api/auth.api";
-import { useAlert } from "hooks/useAlert";
 import { SignUpStyle } from "./SignUp";
+import { useAuth } from "hooks/useAuth";
 
 export interface ResetPasswordProps {
   email: string;
@@ -14,9 +13,7 @@ export interface ResetPasswordProps {
 }
 
 function ResetPassword() {
-  const navigate = useNavigate();
-  const showAlert = useAlert();
-  const [resetRequested, setResetRequested] = useState(false);
+  const { userResetPassword, userResetRequest, resetRequested } = useAuth();
 
   const {
     register,
@@ -26,14 +23,9 @@ function ResetPassword() {
 
   const onSubmit = (data: ResetPasswordProps) => {
     if (resetRequested) {
-      resetPassword(data).then(() => {
-        showAlert("Password has been reset.");
-        navigate("/login");
-      });
+      userResetPassword(data);
     } else {
-      resetRequest(data).then(() => {
-        setResetRequested(true);
-      });
+      userResetRequest(data);
     }
   };
 

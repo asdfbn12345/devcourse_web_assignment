@@ -1,14 +1,11 @@
 import React from "react";
 import Title from "components/common/Title";
-import styled from "styled-components";
 import InputText from "components/common/InputText";
 import Button from "components/common/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { login, signUp } from "api/auth.api";
-import { useAlert } from "hooks/useAlert";
 import { SignUpStyle } from "./SignUp";
-import { useAuthStore } from "store/autStore";
+import { useAuth } from "hooks/useAuth";
 
 export interface LoginProps {
   email: string;
@@ -16,10 +13,7 @@ export interface LoginProps {
 }
 
 function Login() {
-  const navigate = useNavigate();
-  const showAlert = useAlert();
-
-  const { isLoggedIn, storeLogin, storeLogout } = useAuthStore();
+  const { userLogin } = useAuth();
 
   const {
     register,
@@ -28,12 +22,7 @@ function Login() {
   } = useForm<LoginProps>();
 
   const onSubmit = (data: LoginProps) => {
-    login(data).then((res) => {
-      storeLogin(res.token);
-
-      showAlert("Login success.");
-      navigate("/");
-    });
+    userLogin(data);
   };
 
   return (

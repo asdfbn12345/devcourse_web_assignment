@@ -1,5 +1,5 @@
 import Button from "components/common/Button";
-import { BOOKS_VIEW_LIMIT } from "constants/pagenation";
+import { BOOKS_VIEW_LIMIT } from "constants/pagination";
 import { QUERYSTRING } from "constants/querystring";
 import { Pagination as IPagination } from "models/pagination.model";
 import React from "react";
