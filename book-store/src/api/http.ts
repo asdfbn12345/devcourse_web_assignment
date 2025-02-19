@@ -35,7 +35,7 @@ export const requestHandler = async <T>(
   url: string,
   payload?: T
 ) => {
-  let response;
+  let response: T;
 
   switch (method) {
     case "post":
@@ -51,4 +51,6 @@ export const requestHandler = async <T>(
       response = await httpClient.delete(url);
       break;
   }
+
+  return response;
 };

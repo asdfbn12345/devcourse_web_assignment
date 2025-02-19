@@ -1,8 +1,11 @@
+import BookReviews from "components/book/BookReviews";
 import LikeButton from "components/book/LikeButton";
+import Modal from "components/common/Modal";
+import { Tab, Tabs } from "components/common/Tabs";
 import Title from "components/common/Title";
 import { useBook } from "hooks/useBook";
 import { BookDetail as IBookDetail } from "models/book.model";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -49,16 +52,20 @@ const bookInfoList = [
 
 function BookDetail() {
   const { bookId } = useParams();
-  const { book, likeToggle } = useBook(bookId);
+  const { book, likeToggle, reviews, addReview } = useBook(bookId);
+  const [isImgOpen, setIsImgOpen] = useState(false);
 
   if (!book) return null;
 
   return (
     <BookDetailStyle>
       <header className="header">
-        <div className="img">
+        <div className="img" onClick={() => setIsImgOpen(true)}>
           <img src={getImgSrc(book.img)} alt={book.title} />
         </div>
+        <Modal isOpen={isImgOpen} onClose={() => setIsImgOpen(false)}>
+          <img src={getImgSrc(book.img)} alt={book.title} />
+        </Modal>
         <div className="info">
           <Title size="large" color="text">
             {book.title}
@@ -83,11 +90,20 @@ function BookDetail() {
         </div>
       </header>
       <div className="content">
-        <Title size="medium">Detail</Title>
-        <p className="detail">{book.detail}</p>
-
-        <Title size="medium">Contents</Title>
-        <p className="contents">{book.contents}</p>
+        <Tabs>
+          <Tab title="Detail">
+            <Title size="medium">Detail</Title>
+            <p className="detail">{book.detail}</p>
+          </Tab>
+          <Tab title="Contents">
+            <Title size="medium">Contents</Title>
+            <p className="contents">{book.contents}</p>
+          </Tab>
+          <Tab title="Review">
+            <Title size="medium">Review</Title>
+            <BookReviews reviews={reviews} onAdd={addReview} />
+          </Tab>
+        </Tabs>
       </div>
     </BookDetailStyle>
   );

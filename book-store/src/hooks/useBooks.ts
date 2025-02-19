@@ -1,9 +1,6 @@
 import { fetchBooks } from "api/books.api";
 import { BOOKS_VIEW_LIMIT as BOOKS_PAGE_VIEW_LIMIT } from "constants/pagination";
 import { QUERYSTRING } from "constants/querystring";
-import { Book } from "models/book.model";
-import { Pagination } from "models/pagination.model";
-import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 

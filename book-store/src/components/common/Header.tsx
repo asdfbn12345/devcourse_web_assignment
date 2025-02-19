@@ -2,10 +2,11 @@ import ThemeSwitcher from "components/header/ThemeSwitcher";
 import React from "react";
 import styled from "styled-components";
 import logo from "../../assets/images/logo.png";
-import { FaRegUser, FaSignInAlt } from "react-icons/fa";
+import { FaRegUser, FaSignInAlt, FaUserCircle } from "react-icons/fa";
 import { useCategory } from "hooks/useCategory";
 import { useAuthStore } from "store/autStore";
 import { Link } from "react-router-dom";
+import Dropdown from "./DropDown";
 
 function Header() {
   const { category } = useCategory();
@@ -26,35 +27,40 @@ function Header() {
         </ul>
       </nav>
       <nav className="auth">
-        {!isLoggedIn && (
-          <ul>
-            <li>
-              <Link to="/cart">Shopping cart</Link>
-            </li>
-            <li>
-              <Link to="/orderList">Order list</Link>
-            </li>
-            <li>
-              <button>Logout</button>
-            </li>
-          </ul>
-        )}
-        {!isLoggedIn && (
-          <ul>
-            <li>
-              <a href="/login">
-                <FaSignInAlt />
-                login
-              </a>
-            </li>
-            <li>
-              <a href="/sign-up">
-                <FaRegUser />
-                sign-up
-              </a>
-            </li>
-          </ul>
-        )}
+        <Dropdown toggleButton={<FaUserCircle />}>
+          <>
+            {!isLoggedIn && (
+              <ul>
+                <li>
+                  <Link to="/cart">Shopping cart</Link>
+                </li>
+                <li>
+                  <Link to="/orderList">Order list</Link>
+                </li>
+                <li>
+                  <button>Logout</button>
+                </li>
+              </ul>
+            )}
+            {!isLoggedIn && (
+              <ul>
+                <li>
+                  <a href="/login">
+                    <FaSignInAlt />
+                    login
+                  </a>
+                </li>
+                <li>
+                  <a href="/sign-up">
+                    <FaRegUser />
+                    sign-up
+                  </a>
+                </li>
+              </ul>
+            )}
+            <ThemeSwitcher />
+          </>
+        </Dropdown>
       </nav>
       <ThemeSwitcher />
     </HeaderStyle>
@@ -100,10 +106,16 @@ const HeaderStyle = styled.header`
   .auth {
     ul {
       display: flex;
+      flex-direction: column;
       gap: 16px;
+      width: 100px;
+
       li {
-        a {
+        a,
+        button {
           display: flex;
+          justify-content: center;
+          width: 100%;
           align-item: center;
           line-height: 1;
           font-size: 1rem;

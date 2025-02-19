@@ -2,15 +2,33 @@ import BooksEmpty from "components/books/BooksEmpty";
 import BooksFilter from "components/books/BooksFilter";
 import BooksList from "components/books/BooksList";
 import BooksViewSwitcher from "components/books/BooksViewSwitcher";
-import Pagination from "components/books/Pagination";
+import Button from "components/common/Button";
 import Loading from "components/common/Loading";
 import Title from "components/common/Title";
-import { useBooks } from "hooks/useBooks";
-import React from "react";
+import { useBooksInfinite } from "hooks/useBookInfinite";
+import { useIntersectionObserver } from "hooks/useIntersectionObserver";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 function Books() {
-  const { books, pagination, isEmpty, isBooksLoading } = useBooks();
+  const {
+    books,
+    pagination,
+    isEmpty,
+    isBooksLoading,
+    fetchNextPage,
+    hasNextPage,
+  } = useBooksInfinite();
+
+  const moreRef = useIntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      loadMore();
+    }
+  });
+
+  const loadMore = () => {
+    fetchNextPage();
+  };
 
   if (isEmpty) {
     return <BooksEmpty />;
@@ -29,7 +47,18 @@ function Books() {
           <BooksViewSwitcher />
         </div>
         <BooksList books={books} />
-        <Pagination pagination={pagination} />
+        {/* <Pagination pagination={pagination} /> */}
+
+        <div className="more" ref={moreRef}>
+          <Button
+            size="medium"
+            scheme="normal"
+            onClick={() => fetchNextPage()}
+            disabled={!hasNextPage}
+          >
+            {hasNextPage ? "More" : "Last page"}
+          </Button>
+        </div>
       </BooksStyle>
     </>
   );
