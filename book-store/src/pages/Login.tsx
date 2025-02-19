@@ -34,6 +34,7 @@ function Login() {
             <InputText
               placeholder="email"
               inputType="email"
+              inputMode="email"
               {...register("email", {
                 required: true,
               })}
@@ -46,6 +47,7 @@ function Login() {
             <InputText
               placeholder="password"
               inputType="password"
+              inputMode="text"
               {...register("password", {
                 required: true,
               })}

@@ -22,6 +22,10 @@ const LayoutStyle = styled.main`
   margin: 0 auto;
   max-width: ${({ theme }) => theme.layout.width.large};
   padding: 20px 0;
+
+  @media screen AND ${({ theme }) => theme.mediaQuery.mobile} {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 export default Layout;

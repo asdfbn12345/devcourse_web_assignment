@@ -3,7 +3,7 @@ export interface Book {
   title: string;
   img: number;
   category_id: number;
-  from: string;
+  form: string;
   isbn: string;
   summary: string;
   detail: string;
